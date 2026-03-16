@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Florería Rosalía | Arte Floral de Lujo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4AF37;
+            --gold-light: #F4E8C1;
+            --gold-dark: #B8941F;
+            --pink: #FFB7C5;
+            --pink-light: #FFF0F3;
+            --white: #FFFFFF;
+            --dark: #2C2C2C;
+            --gray: #666666;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--white);
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Navegación - Espaciado corregido */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            box-shadow: 0 2px 20px rgba(212, 175, 55, 0.1);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Logo con más espacio a la derecha */
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-right: 3rem; /* Espacio extra */
+            padding-left: 0.5rem;
+        }
+
+        .logo::before {
+            content: "✿";
+            color: var(--pink);
+            font-size: 1.5rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+            margin-left: auto; /* Empuja los links a la derecha separándolos del logo */
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--dark);
+            font-weight: 500;
+            position: relative;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-icons {
+            display: flex;
+            gap: 1.5rem;
+            align-items: center;
+            margin-left: 3rem; /* Espacio entre links y carrito */
+        }
+
+        .cart-btn {
+            position: relative;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--dark);
+            transition: transform 0.3s;
+            padding: 0.5rem;
+        }
+
+        .cart-btn:hover {
+            transform: scale(1.1);
+            color: var(--gold);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            background: var(--pink);
+            color: white;
+            font-size: 0.65rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 80px;
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--white) 100%);
+            display: flex;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 5%;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            right: -10%;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, var(--gold-light) 0%, transparent 70%);
+            opacity: 0.4;
+            border-radius: 50%;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            color: var(--dark);
+            font-weight: 400;
+            letter-spacing: -1px;
+        }
+
+        .hero-text h1 span {
+            color: var(--gold);
+            font-style: italic;
+            font-weight: 600;
+        }
+
+        .hero-text p {
+            font-size: 1.15rem;
+            color: var(--gray);
+            margin-bottom: 2.5rem;
+            line-height: 1.8;
+            max-width: 480px;
+            font-weight: 300;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: white;
+            padding: 1rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+            background: var(--gold-dark);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--dark);
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--gold);
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-secondary:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        .hero-image {
+            position: relative;
+            height: 600px;
+            width: 100%;
+        }
+
+        /* La rosa con lluvia/gotas como imagen principal */
+        .hero-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+        }
+
+        /* Tarjetas flotantes */
+        .floating-card {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 1.2rem 1.5rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        .floating-card.left {
+            bottom: 60px;
+            left: -40px;
+        }
+
+        .floating-card.right {
+            top: 60px;
+            right: -30px;
+            animation-delay: 2s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .icon-delicate {
+            width: 32px;
+            height: 32px;
+            stroke: var(--gold);
+            stroke-width: 1.5;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .floating-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .floating-text strong {
+            font-family: 'Playfair Display', serif;
+            color: var(--dark);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .floating-text span {
+            font-size: 0.8rem;
+            color: var(--gray);
+            font-weight: 300;
+        }
+
+        /* Sección de Catálogo */
+        .catalogo {
+            padding: 6rem 5%;
+            background: var(--white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            color: var(--dark);
+            margin-bottom: 1rem;
+            font-weight: 400;
+        }
+
+        .section-header p {
+            color: var(--gray);
+            font-size: 1.05rem;
+            font-weight: 300;
+        }
+
+        .gold-line {
+            width: 60px;
+            height: 1px;
+            background: var(--gold);
+            margin: 1.5rem auto;
+        }
+
+        .filtros {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filtro-btn {
+            padding: 0.8rem 1.8rem;
+            border: 1px solid #e0e0e0;
+            background: white;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Lato', sans-serif;
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .filtro-btn.active,
+        .filtro-btn:hover {
+            background: var(--pink-light);
+            border-color: var(--pink);
+            color: var(--dark);
+        }
+
+        .productos-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .producto-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+            transition: all 0.4s ease;
+            position: relative;
+            cursor: pointer;
+            border: 1px solid #f5f5f5;
+        }
+
+        .producto-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.12);
+            border-color: var(--gold-light);
+        }
+
+        .producto-imagen {
+            height: 380px;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--gold-light) 100%);
+        }
+
+        .producto-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+            display: block;
+        }
+
+        .producto-card:hover .producto-imagen img {
+            transform: scale(1.08);
+        }
+
+        .producto-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding-bottom: 2rem;
+        }
+
+        .producto-card:hover .producto-overlay {
+            opacity: 1;
+        }
+
+        .quick-view {
+            background: rgba(255, 255, 255, 0.95);
+            color: var(--dark);
+            padding: 0.8rem 1.8rem;
+            border-radius: 30px;
+            border: none;
+            cursor: pointer;
+            font-weight: 500;
+            font-size: 0.85rem;
+            letter-spacing: 0.5px;
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .producto-card:hover .quick-view {
+            transform: translateY(0);
+        }
+
+        .producto-info {
+            padding: 1.5rem;
+            background: white;
+        }
+
+        .producto-categoria {
+            color: var(--pink);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .producto-nombre {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .producto-precio {
+            font-size: 1.25rem;
+            color: var(--gold);
+            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .add-to-cart {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--gold);
+            border: none;
+            color: white;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        }
+
+        .add-to-cart:hover {
+            transform: scale(1.1);
+            background: var(--gold-dark);
+        }
+
+        /* Carrito */
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -450px;
+            width: 450px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 30px rgba(0,0,0,0.08);
+            z-index: 2000;
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 2rem;
+            background: var(--pink-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+        }
+
+        .cart-header h3 {
+            font-size: 1.3rem;
+            color: var(--dark);
+            font-weight: 400;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            font-size: 1.3rem;
+            cursor: pointer;
+            color: var(--dark);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-cart:hover {
+            background: rgba(212, 175, 55, 0.1);
+            color: var(--gold);
+        }
+
+        .cart-items {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+        }
+
+        .cart-item {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem;
+            background: rgba(255, 183, 197, 0.1);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            align-items: center;
+            border: 1px solid rgba(212, 175, 55, 0.1);
+        }
+
+        .cart-item img {
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 8px;
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--gold-light) 100%);
+        }
+
+        .cart-item-info h4 {
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+            font-weight: 500;
+        }
+
+        .cart-item-info p {
+            color: var(--gold);
+            font-weight: 600;
+            font-size: 0.95rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .remove-item {
+            margin-left: auto;
+            background: none;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: color 0.3s;
+            padding: 0.5rem;
+        }
+
+        .remove-item:hover {
+            color: #ff4444;
+        }
+
+        .cart-footer {
+            padding: 2rem;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            background: white;
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 1.1rem;
+            background: var(--gold);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            letter-spacing: 0.5px;
+        }
+
+        .checkout-btn:hover {
+            background: var(--gold-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            width: 90%;
+            max-width: 850px;
+            border-radius: 20px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            overflow: hidden;
+            position: relative;
+            animation: modalIn 0.3s ease;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .modal-imagen {
+            height: 100%;
+            min-height: 400px;
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--gold-light) 100%);
+        }
+
+        .modal-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .modal-info {
+            padding: 3rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .modal-info h2 {
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
+            color: var(--dark);
+            font-weight: 400;
+        }
+
+        .modal-info .precio {
+            font-size: 1.8rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .modal-info p {
+            color: var(--gray);
+            line-height: 1.8;
+            margin-bottom: 2rem;
+            font-weight: 300;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.9);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.1rem;
+            z-index: 10;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--dark);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .close-modal:hover {
+            background: var(--gold);
+            color: white;
+            transform: rotate(90deg);
+        }
+
+        /* Servicios */
+        .servicios {
+            padding: 6rem 5%;
+            background: var(--pink-light);
+        }
+
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .servicio-card {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: white;
+            border-radius: 20px;
+            transition: all 0.3s;
+            border: 1px solid transparent;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
+        }
+
+        .servicio-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-light);
+            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.08);
+        }
+
+        .servicio-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--gold-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: var(--gold);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .servicio-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+            font-weight: 500;
+        }
+
+        .servicio-card p {
+            color: var(--gray);
+            line-height: 1.7;
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        /* Testimonios */
+        .testimonios {
+            padding: 6rem 5%;
+            background: white;
+        }
+
+        .testimonios-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonio-slide {
+            text-align: center;
+            padding: 2rem;
+            display: none;
+        }
+
+        .testimonio-slide.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .testimonio-text {
+            font-size: 1.4rem;
+            font-style: italic;
+            color: var(--dark);
+            margin-bottom: 2rem;
+            line-height: 1.7;
+            font-family: 'Playfair Display', serif;
+            font-weight: 400;
+        }
+
+        .testimonio-autor {
+            font-weight: 600;
+            color: var(--gold);
+            font-size: 0.95rem;
+            letter-spacing: 1px;
+        }
+
+        .testimonio-nav {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        .testimonio-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid var(--gold);
+            background: white;
+            color: var(--gold);
+            cursor: pointer;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .testimonio-btn:hover {
+            background: var(--gold);
+            color: white;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 4rem 5% 2rem;
+        }
+
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 4rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h3 {
+            color: var(--gold);
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: #aaa;
+            text-decoration: none;
+            line-height: 2;
+            transition: color 0.3s;
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        .footer-section a:hover {
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid #444;
+            padding-top: 2rem;
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 968px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .hero-text h1 {
+                font-size: 2.8rem;
+            }
+
+            .hero-image {
+                height: 400px;
+                order: -1;
+            }
+
+            .floating-card.left {
+                left: 10px;
+                bottom: 20px;
+            }
+
+            .floating-card.right {
+                right: 10px;
+                top: 20px;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .servicios-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .modal-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+                text-align: center;
+            }
+
+            .cart-sidebar {
+                width: 100%;
+                right: -100%;
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+<base target="_blank">
+</head>
+<body>
+
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">Rosalía</a>
+            <ul class="nav-links">
+                <li><a href="#inicio">Inicio</a></li>
+                <li><a href="#catalogo">Catálogo</a></li>
+                <li><a href="#servicios">Servicios</a></li>
+                <li><a href="#testimonios">Testimonios</a></li>
+                <li><a href="#contacto">Contacto</a></li>
+            </ul>
+            <div class="nav-icons">
+                <button class="cart-btn" onclick="toggleCart()" aria-label="Carrito">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M6 6h15l-1.5 9h-12z"></path>
+                        <circle cx="9" cy="20" r="1"></circle>
+                        <circle cx="18" cy="20" r="1"></circle>
+                        <path d="M6 6L5 3H2"></path>
+                    </svg>
+                    <span class="cart-count" id="cartCount">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero con la ROSA CON LLUVIA/GOTAS -->
+    <section class="hero" id="inicio">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Arte Floral <span>Exquisito</span></h1>
+                <p>Transformamos emociones en arreglos únicos. Cada rosa cuenta una historia de amor, celebración y belleza natural elaborada con dedicación artesanal.</p>
+                <div class="cta-buttons">
+                    <button class="btn-primary" onclick="scrollToSection('catalogo')">Ver Catálogo</button>
+                    <button class="btn-secondary" onclick="scrollToSection('servicios')">Nuestros Servicios</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <!-- IMAGEN PRINCIPAL: Rosa con gotas de lluvia -->
+                <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=800&h=1000&fit=crop&auto=format" 
+                     alt="Rosa premium con gotas de rocío">
+                
+                <div class="floating-card left">
+                    <svg class="icon-delicate" viewBox="0 0 24 24">
+                        <path d="M12 7.5a4.5 4.5 0 1 1 4.5 4.5M12 7.5A4.5 4.5 0 1 0 7.5 12M12 7.5V9m-4.5 3a4.5 4.5 0 1 0 4.5 4.5M7.5 12H9m7.5 0a4.5 4.5 0 1 1-4.5 4.5m4.5-4.5H15m-3 4.5V15"/>
+                        <circle cx="12" cy="12" r="2"/>
+                    </svg>
+                    <div class="floating-text">
+                        <strong>Entrega Express</strong>
+                        <span>En menos de 2 horas</span>
+                    </div>
+                </div>
+
+                <div class="floating-card right">
+                    <svg class="icon-delicate" viewBox="0 0 24 24" style="stroke-width: 1.2;">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+                    </svg>
+                    <div class="floating-text">
+                        <strong>4.9 de 5</strong>
+                        <span>+2000 clientes felices</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="catalogo" id="catalogo">
+        <div class="section-header fade-in">
+            <h2>Nuestros Ramos</h2>
+            <div class="gold-line"></div>
+            <p>Diseños exclusivos creados por nuestros floristas expertos</p>
+        </div>
+
+        <div class="filtros fade-in">
+            <button class="filtro-btn active" onclick="filterProducts('todos')">Todos</button>
+            <button class="filtro-btn" onclick="filterProducts('ramos')">Ramos</button>
+            <button class="filtro-btn" onclick="filterProducts('bodas')">Bodas</button>
+            <button class="filtro-btn" onclick="filterProducts('eventos')">Eventos</button>
+            <button class="filtro-btn" onclick="filterProducts('plantas')">Plantas</button>
+        </div>
+
+        <div class="productos-grid" id="productosGrid"></div>
+    </section>
+
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Tu Selección</h3>
+            <button class="close-cart" onclick="toggleCart()">✕</button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <p style="text-align: center; color: #999; padding: 3rem; font-weight: 300;">Tu carrito está vacío</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal" style="font-family: 'Playfair Display', serif; color: var(--gold);">$0.00</span>
+            </div>
+            <button class="checkout-btn">Finalizar Compra</button>
+        </div>
+    </div>
+
+    <div class="modal" id="productModal">
+        <div class="modal-content">
+            <button class="close-modal" onclick="closeModal()">✕</button>
+            <div class="modal-imagen">
+                <img id="modalImg" src="" alt="">
+            </div>
+            <div class="modal-info">
+                <h2 id="modalTitle">Nombre Producto</h2>
+                <p class="precio" id="modalPrice">$0.00</p>
+                <p id="modalDesc">Descripción del producto...</p>
+                <button class="btn-primary" id="modalAddBtn" style="width: 100%; margin-top: 1rem;">
+                    Añadir al Carrito
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <section class="servicios" id="servicios">
+        <div class="section-header fade-in">
+            <h2>Nuestros Servicios</h2>
+            <div class="gold-line"></div>
+            <p>Más que flores, creamos experiencias memorables</p>
+        </div>
+        <div class="servicios-grid">
+            <div class="servicio-card fade-in">
+                <div class="servicio-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M12 7.5a4.5 4.5 0 1 1 4.5 4.5M12 7.5A4.5 4.5 0 1 0 7.5 12M12 7.5V9m-4.5 3a4.5 4.5 0 1 0 4.5 4.5M7.5 12H9m7.5 0a4.5 4.5 0 1 1-4.5 4.5m4.5-4.5H15m-3 4.5V15"/>
+                        <circle cx="12" cy="12" r="2"/>
+                    </svg>
+                </div>
+                <h3>Arreglos Personalizados</h3>
+                <p>Diseñamos arreglos únicos adaptados a tu estilo, ocasión y presupuesto. Consulta gratuita con nuestros expertos.</p>
+            </div>
+            <div class="servicio-card fade-in">
+                <div class="servicio-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M2 12h20M2 12c0 5 4 9 9 9h2c5 0 9-4 9-9M2 12c0-3 2-6 5-6h10c3 0 5 3 5 6"/>
+                        <circle cx="12" cy="7" r="2"/>
+                    </svg>
+                </div>
+                <h3>Decoración de Eventos</h3>
+                <p>Bodas, corporativos y celebraciones. Transformamos espacios en ambientes mágicos con nuestra decoración floral.</p>
+            </div>
+            <div class="servicio-card fade-in">
+                <div class="servicio-icon">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="2" y="8" width="20" height="12" rx="2"/>
+                        <path d="M2 8h20v4H2zM12 8V4"/>
+                    </svg>
+                </div>
+                <h3>Envío Express</h3>
+                <p>Entrega el mismo día en la ciudad. Empaque premium y cuidado especial para que lleguen perfectas.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonios" id="testimonios">
+        <div class="section-header fade-in">
+            <h2>Lo Que Dicen Nuestros Clientes</h2>
+            <div class="gold-line"></div>
+        </div>
+        <div class="testimonios-container fade-in">
+            <div class="testimonio-slide active">
+                <p class="testimonio-text">"Las flores para mi boda fueron simplemente espectaculares. Rosalía entendió exactamente mi visión y la superó. Cada detalle fue perfecto."</p>
+                <p class="testimonio-autor">— María González</p>
+            </div>
+            <div class="testimonio-slide">
+                <p class="testimonio-text">"El servicio de entrega express me salvó el día. En 90 minutos tenía el ramo más hermoso en mi puerta. ¡Altamente recomendado!"</p>
+                <p class="testimonio-autor">— Carlos Mendez</p>
+            </div>
+            <div class="testimonio-slide">
+                <p class="testimonio-text">"Calidad incomparable. Desde que descubrí Rosalía, no compro flores en ningún otro lugar. La frescura y el diseño son únicos."</p>
+                <p class="testimonio-autor">— Ana Patricia López</p>
+            </div>
+            <div class="testimonio-nav">
+                <button class="testimonio-btn" onclick="changeTestimonio(-1)">←</button>
+                <button class="testimonio-btn" onclick="changeTestimonio(1)">→</button>
+            </div>
+        </div>
+    </section>
+
+    <footer id="contacto">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Rosalía Florería</h3>
+                <p>Creando momentos inolvidables desde 2015. Especialistas en arte floral de lujo para toda ocasión.</p>
+                <br>
+                <p>📍 Av. Revolución 123, Ciudad de México</p>
+                <p>📞 (55) 1234-5678</p>
+                <p>✉️ hola@rosaliaflores.com</p>
+            </div>
+            <div class="footer-section">
+                <h3>Enlaces</h3>
+                <a href="#">Sobre Nosotros</a><br>
+                <a href="#">Catálogo</a><br>
+                <a href="#">Servicios</a><br>
+                <a href="#">Blog Floral</a>
+            </div>
+            <div class="footer-section">
+                <h3>Servicio al Cliente</h3>
+                <a href="#">Preguntas Frecuentes</a><br>
+                <a href="#">Envíos y Entregas</a><br>
+                <a href="#">Términos y Condiciones</a><br>
+                <a href="#">Política de Privacidad</a>
+            </div>
+            <div class="footer-section">
+                <h3>Síguenos</h3>
+                <a href="#">Instagram</a><br>
+                <a href="#">Facebook</a><br>
+                <a href="#">Pinterest</a><br>
+                <a href="#">TikTok</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Rosalía Florería. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        // URLs VERIFICADAS DE FLORES REALES (sin animales!)
+        const productos = [
+            {
+                id: 1,
+                nombre: "Ramo Rosas Rojas Premium",
+                categoria: "ramos",
+                precio: 1299,
+                imagen: "https://images.unsplash.com/photo-1562690868-60bbe7293e94?w=600&h=800&fit=crop&auto=format",
+                descripcion: "12 rosas rojas premium importadas con detalles en follaje selecto y lazo de seda dorada. Incluye tarjeta personalizada."
+            },
+            {
+                id: 2,
+                nombre: "Jardín de Peonías",
+                categoria: "ramos",
+                precio: 1899,
+                imagen: "https://images.unsplash.com/photo-1563241527-3004b7be0ee9?w=600&h=800&fit=crop&auto=format",
+                descripcion: "Elegante arreglo de peonías blancas y rosas en tonos blush, presentadas en base de cerámica artesanal."
+            },
+            {
+                id: 3,
+                nombre: "Ramo de Novia Garden",
+                categoria: "bodas",
+                precio: 4500,
+                imagen: "https://images.unsplash.com/photo-1591886960571-74d43a9e4166?w=600&h=800&fit=crop&auto=format",
+                descripcion: "Ramo de novia cascade elaborado con gardenias, rosas garden, y follaje texturizado. Diseño exclusivo."
+            },
+            {
+                id: 4,
+                nombre: "Orquídea Phalaenopsis",
+                categoria: "plantas",
+                precio: 1599,
+                imagen: "https://images.unsplash.com/photo-1566928670968-a589322d7d6b?w=600&h=800&fit=crop&auto=format",
+                descripcion: "Planta de orquídea blanca de doble vástago en maceta de porcelana blanca. Duración 3+ meses."
+            },
+            {
+                id: 5,
+                nombre: "Centro de Mesa Imperial",
+                categoria: "eventos",
+                precio: 3200,
+                imagen: "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=600&h=800&fit=crop&auto=format",
+                descripcion: "Diseño monumental con hortensias blancas, rosas vendela y velas en candelabro dorado."
+            },
+            {
+                id: 6,
+                nombre: "Caja Rosas Preservadas",
+                categoria: "ramos",
+                precio: 2100,
+                imagen: "https://images.unsplash.com/photo-1582794543139-8ac92a900275?w=600&h=800&fit=crop&auto=format",
+                descripcion: "Caja negra mate con 24 rosas preservadas en tonalidades blush pink. Duran 1 año sin agua."
+            }
+        ];
+
+        let carrito = [];
+        let currentTestimonio = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            renderProductos('todos');
+            setupScrollAnimations();
+        });
+
+        function renderProductos(filtro) {
+            const grid = document.getElementById('productosGrid');
+            const filtrados = filtro === 'todos' ? productos : productos.filter(p => p.categoria === filtro);
+            
+            grid.innerHTML = filtrados.map(producto => `
+                <div class="producto-card" onclick="openModal(${producto.id})">
+                    <div class="producto-imagen">
+                        <img src="${producto.imagen}" 
+                             alt="${producto.nombre}" 
+                             loading="lazy"
+                             onerror="this.style.display='none'">
+                        <div class="producto-overlay">
+                            <button class="quick-view">Vista Rápida</button>
+                        </div>
+                    </div>
+                    <div class="producto-info">
+                        <p class="producto-categoria">${producto.categoria}</p>
+                        <h3 class="producto-nombre">${producto.nombre}</h3>
+                        <p class="producto-precio">$${producto.precio.toLocaleString()}</p>
+                    </div>
+                    <button class="add-to-cart" onclick="event.stopPropagation(); addToCart(${producto.id})">+</button>
+                </div>
+            `).join('');
+        }
+
+        function filterProducts(categoria) {
+            document.querySelectorAll('.filtro-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if(btn.textContent.toLowerCase().includes(categoria === 'todos' ? 'tod' : categoria)) {
+                    btn.classList.add('active');
+                }
+            });
+            renderProductos(categoria);
+        }
+
+        function openModal(id) {
+            const producto = productos.find(p => p.id === id);
+            document.getElementById('modalImg').src = producto.imagen;
+            document.getElementById('modalTitle').textContent = producto.nombre;
+            document.getElementById('modalPrice').textContent = `$${producto.precio.toLocaleString()}`;
+            document.getElementById('modalDesc').textContent = producto.descripcion;
+            document.getElementById('modalAddBtn').onclick = () => {
+                addToCart(producto.id);
+                closeModal();
+            };
+            document.getElementById('productModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            document.getElementById('productModal').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleCart() {
+            document.getElementById('cartSidebar').classList.toggle('open');
+        }
+
+        function addToCart(id) {
+            const producto = productos.find(p => p.id === id);
+            const existente = carrito.find(item => item.id === id);
+            
+            if(existente) {
+                existente.cantidad++;
+            } else {
+                carrito.push({...producto, cantidad: 1});
+            }
+            
+            updateCart();
+            
+            const count = document.getElementById('cartCount');
+            count.style.transform = 'scale(1.3)';
+            setTimeout(() => count.style.transform = 'scale(1)', 200);
+            
+            if(window.innerWidth > 968) {
+                document.getElementById('cartSidebar').classList.add('open');
+            }
+        }
+
+        function removeFromCart(id) {
+            carrito = carrito.filter(item => item.id !== id);
+            updateCart();
+        }
+
+        function updateCart() {
+            const cartItems = document.getElementById('cartItems');
+            const total = carrito.reduce((sum, item) => sum + (item.precio * item.cantidad), 0);
+            
+            document.getElementById('cartCount').textContent = carrito.reduce((sum, item) => sum + item.cantidad, 0);
+            document.getElementById('cartTotal').textContent = `$${total.toLocaleString()}`;
+            
+            if(carrito.length === 0) {
+                cartItems.innerHTML = '<p style="text-align: center; color: #999; padding: 3rem; font-weight: 300;">Tu carrito está vacío</p>';
+            } else {
+                cartItems.innerHTML = carrito.map(item => `
+                    <div class="cart-item">
+                        <img src="${item.imagen}" alt="${item.nombre}">
+                        <div class="cart-item-info">
+                            <h4>${item.nombre}</h4>
+                            <p>$${item.precio.toLocaleString()} x ${item.cantidad}</p>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart(${item.id})">🗑</button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function changeTestimonio(direction) {
+            const slides = document.querySelectorAll('.testimonio-slide');
+            slides[currentTestimonio].classList.remove('active');
+            
+            currentTestimonio += direction;
+            if(currentTestimonio >= slides.length) currentTestimonio = 0;
+            if(currentTestimonio < 0) currentTestimonio = slides.length - 1;
+            
+            slides[currentTestimonio].classList.add('active');
+        }
+
+        function setupScrollAnimations() {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if(entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+        }
+
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.onclick = function(event) {
+            const modal = document.getElementById('productModal');
+            if(event.target === modal) {
+                closeModal();
+            }
+        }
+        
+        setInterval(() => changeTestimonio(1), 5000);
+    </script>
+</body>
+</html>
