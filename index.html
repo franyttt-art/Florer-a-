@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Florería Rosalía | Arte Floral de Lujo</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
@@ -21,6 +21,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
         }
 
         body {
@@ -28,21 +34,22 @@
             background-color: var(--white);
             color: var(--dark);
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
         }
 
         h1, h2, h3, h4 {
             font-family: 'Playfair Display', serif;
         }
 
-        /* Navegación - Espaciado corregido */
+        /* Navegación Mobile-First */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             backdrop-filter: blur(10px);
             z-index: 1000;
-            padding: 1rem 5%;
+            padding: 0.8rem 1rem;
             box-shadow: 0 2px 20px rgba(212, 175, 55, 0.1);
         }
 
@@ -52,69 +59,104 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            position: relative;
         }
 
-        /* Logo con más espacio a la derecha */
         .logo {
             font-family: 'Playfair Display', serif;
-            font-size: 2rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: var(--gold);
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            margin-right: 3rem; /* Espacio extra */
-            padding-left: 0.5rem;
+            gap: 0.3rem;
+            z-index: 1001;
         }
 
         .logo::before {
             content: "✿";
             color: var(--pink);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
         }
 
-        .nav-links {
+        /* Menú hamburguesa */
+        .menu-toggle {
             display: flex;
-            gap: 2.5rem;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 24px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            z-index: 1001;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 2px;
+            background: var(--dark);
+            border-radius: 2px;
+            transition: all 0.3s;
+            position: relative;
+            transform-origin: 1px;
+        }
+
+        .menu-toggle.active span:first-child {
+            transform: rotate(45deg);
+        }
+
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg);
+        }
+
+        /* Menú mobile */
+        .nav-links {
+            position: fixed;
+            top: 0;
+            left: -100%;
+            width: 80%;
+            max-width: 300px;
+            height: 100vh;
+            background: white;
+            flex-direction: column;
+            padding: 5rem 2rem 2rem;
+            gap: 1.5rem;
             list-style: none;
-            margin-left: auto; /* Empuja los links a la derecha separándolos del logo */
+            transition: left 0.3s ease;
+            box-shadow: 5px 0 30px rgba(0,0,0,0.1);
+            z-index: 999;
+        }
+
+        .nav-links.active {
+            left: 0;
         }
 
         .nav-links a {
             text-decoration: none;
             color: var(--dark);
             font-weight: 500;
-            position: relative;
+            font-size: 1.1rem;
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #f0f0f0;
+            display: block;
             transition: color 0.3s;
-            font-size: 0.95rem;
-            letter-spacing: 0.5px;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--gold);
-            transition: width 0.3s;
         }
 
         .nav-links a:hover {
             color: var(--gold);
         }
 
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
         .nav-icons {
             display: flex;
-            gap: 1.5rem;
             align-items: center;
-            margin-left: 3rem; /* Espacio entre links y carrito */
+            gap: 1rem;
         }
 
         .cart-btn {
@@ -123,13 +165,10 @@
             border: none;
             cursor: pointer;
             color: var(--dark);
-            transition: transform 0.3s;
             padding: 0.5rem;
-        }
-
-        .cart-btn:hover {
-            transform: scale(1.1);
-            color: var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .cart-count {
@@ -148,46 +187,53 @@
             font-weight: 700;
         }
 
-        /* Hero Section */
-        .hero {
-            margin-top: 80px;
-            min-height: 100vh;
-            background: linear-gradient(135deg, var(--pink-light) 0%, var(--white) 100%);
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            padding: 4rem 5%;
+        /* Overlay para cerrar menú */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 998;
         }
 
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: -30%;
-            right: -10%;
-            width: 600px;
-            height: 600px;
-            background: radial-gradient(circle, var(--gold-light) 0%, transparent 70%);
-            opacity: 0.4;
-            border-radius: 50%;
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Hero Mobile */
+        .hero {
+            margin-top: 60px;
+            min-height: auto;
+            background: linear-gradient(135deg, var(--pink-light) 0%, var(--white) 100%);
+            padding: 2rem 1rem;
+            position: relative;
         }
 
         .hero-content {
             max-width: 1400px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            align-items: center;
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .hero-text {
+            text-align: center;
+            order: 2;
         }
 
         .hero-text h1 {
-            font-size: 4rem;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
+            font-size: 2.2rem;
+            line-height: 1.2;
+            margin-bottom: 1rem;
             color: var(--dark);
             font-weight: 400;
-            letter-spacing: -1px;
         }
 
         .hero-text h1 span {
@@ -197,106 +243,94 @@
         }
 
         .hero-text p {
-            font-size: 1.15rem;
+            font-size: 1rem;
             color: var(--gray);
-            margin-bottom: 2.5rem;
-            line-height: 1.8;
-            max-width: 480px;
+            margin-bottom: 1.5rem;
+            line-height: 1.7;
             font-weight: 300;
         }
 
         .cta-buttons {
             display: flex;
-            gap: 1rem;
+            flex-direction: column;
+            gap: 0.8rem;
+            align-items: center;
+        }
+
+        .btn-primary, .btn-secondary {
+            width: 100%;
+            max-width: 280px;
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: none;
+            text-align: center;
         }
 
         .btn-primary {
             background: var(--gold);
             color: white;
-            padding: 1rem 2.5rem;
-            border: none;
-            border-radius: 50px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
             box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
-            letter-spacing: 0.5px;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
-            background: var(--gold-dark);
         }
 
         .btn-secondary {
             background: transparent;
             color: var(--dark);
-            padding: 1rem 2.5rem;
             border: 1px solid var(--gold);
-            border-radius: 50px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 0.5px;
-        }
-
-        .btn-secondary:hover {
-            background: var(--gold);
-            color: white;
         }
 
         .hero-image {
             position: relative;
-            height: 600px;
+            height: 350px;
             width: 100%;
+            order: 1;
         }
 
-        /* La rosa con lluvia/gotas como imagen principal */
         .hero-image img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            border-radius: 20px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
-        /* Tarjetas flotantes */
+        /* Tarjetas flotantes mobile */
         .floating-card {
             position: absolute;
-            background: rgba(255, 255, 255, 0.9);
+            background: rgba(255, 255, 255, 0.95);
             backdrop-filter: blur(10px);
-            padding: 1.2rem 1.5rem;
-            border-radius: 16px;
-            box-shadow: 0 8px 32px rgba(212, 175, 55, 0.15);
+            padding: 0.8rem 1rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.15);
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 0.8rem;
             border: 1px solid rgba(212, 175, 55, 0.2);
-            animation: float 4s ease-in-out infinite;
+            animation: float 3s ease-in-out infinite;
         }
 
         .floating-card.left {
-            bottom: 60px;
-            left: -40px;
+            bottom: 15px;
+            left: 10px;
         }
 
         .floating-card.right {
-            top: 60px;
-            right: -30px;
-            animation-delay: 2s;
+            top: 15px;
+            right: 10px;
+            animation-delay: 1.5s;
         }
 
         @keyframes float {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
+            50% { transform: translateY(-8px); }
         }
 
         .icon-delicate {
-            width: 32px;
-            height: 32px;
+            width: 24px;
+            height: 24px;
             stroke: var(--gold);
             stroke-width: 1.5;
             fill: none;
@@ -307,72 +341,80 @@
         .floating-text {
             display: flex;
             flex-direction: column;
-            gap: 0.2rem;
+            gap: 0.1rem;
         }
 
         .floating-text strong {
             font-family: 'Playfair Display', serif;
             color: var(--dark);
-            font-size: 0.95rem;
+            font-size: 0.8rem;
             font-weight: 600;
         }
 
         .floating-text span {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             color: var(--gray);
             font-weight: 300;
         }
 
-        /* Sección de Catálogo */
+        /* Catálogo Mobile */
         .catalogo {
-            padding: 6rem 5%;
+            padding: 3rem 1rem;
             background: var(--white);
         }
 
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 2rem;
         }
 
         .section-header h2 {
-            font-size: 2.8rem;
+            font-size: 1.8rem;
             color: var(--dark);
-            margin-bottom: 1rem;
+            margin-bottom: 0.5rem;
             font-weight: 400;
         }
 
         .section-header p {
             color: var(--gray);
-            font-size: 1.05rem;
+            font-size: 0.95rem;
             font-weight: 300;
         }
 
         .gold-line {
-            width: 60px;
+            width: 50px;
             height: 1px;
             background: var(--gold);
-            margin: 1.5rem auto;
+            margin: 1rem auto;
         }
 
         .filtros {
             display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+
+        .filtros::-webkit-scrollbar {
+            display: none;
         }
 
         .filtro-btn {
-            padding: 0.8rem 1.8rem;
+            padding: 0.6rem 1.2rem;
             border: 1px solid #e0e0e0;
             background: white;
-            border-radius: 30px;
+            border-radius: 25px;
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Lato', sans-serif;
             font-weight: 400;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: var(--gray);
+            white-space: nowrap;
+            flex-shrink: 0;
         }
 
         .filtro-btn.active,
@@ -384,31 +426,29 @@
 
         .productos-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2.5rem;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
             max-width: 1400px;
             margin: 0 auto;
         }
 
         .producto-card {
             background: white;
-            border-radius: 20px;
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.06);
-            transition: all 0.4s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
             position: relative;
             cursor: pointer;
             border: 1px solid #f5f5f5;
         }
 
-        .producto-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.12);
-            border-color: var(--gold-light);
+        .producto-card:active {
+            transform: scale(0.98);
         }
 
         .producto-imagen {
-            height: 380px;
+            height: 280px;
             position: relative;
             overflow: hidden;
             background: linear-gradient(135deg, var(--pink-light) 0%, var(--gold-light) 100%);
@@ -418,75 +458,32 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.6s ease;
             display: block;
         }
 
-        .producto-card:hover .producto-imagen img {
-            transform: scale(1.08);
-        }
-
-        .producto-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.3), transparent);
-            opacity: 0;
-            transition: opacity 0.4s;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            padding-bottom: 2rem;
-        }
-
-        .producto-card:hover .producto-overlay {
-            opacity: 1;
-        }
-
-        .quick-view {
-            background: rgba(255, 255, 255, 0.95);
-            color: var(--dark);
-            padding: 0.8rem 1.8rem;
-            border-radius: 30px;
-            border: none;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 0.85rem;
-            letter-spacing: 0.5px;
-            transform: translateY(20px);
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .producto-card:hover .quick-view {
-            transform: translateY(0);
-        }
-
         .producto-info {
-            padding: 1.5rem;
+            padding: 1.2rem;
             background: white;
         }
 
         .producto-categoria {
             color: var(--pink);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 0.5rem;
+            letter-spacing: 1.5px;
+            margin-bottom: 0.3rem;
             font-weight: 600;
         }
 
         .producto-nombre {
-            font-size: 1.2rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 0.4rem;
             color: var(--dark);
             font-weight: 500;
         }
 
         .producto-precio {
-            font-size: 1.25rem;
+            font-size: 1.2rem;
             color: var(--gold);
             font-weight: 600;
             font-family: 'Playfair Display', serif;
@@ -494,39 +491,32 @@
 
         .add-to-cart {
             position: absolute;
-            bottom: 1.5rem;
-            right: 1.5rem;
-            width: 42px;
-            height: 42px;
+            bottom: 1rem;
+            right: 1rem;
+            width: 40px;
+            height: 40px;
             border-radius: 50%;
             background: var(--gold);
             border: none;
             color: white;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             cursor: pointer;
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
         }
 
-        .add-to-cart:hover {
-            transform: scale(1.1);
-            background: var(--gold-dark);
-        }
-
-        /* Carrito */
+        /* Carrito Mobile - Pantalla completa */
         .cart-sidebar {
             position: fixed;
             top: 0;
-            right: -450px;
-            width: 450px;
+            right: -100%;
+            width: 100%;
             height: 100vh;
             background: white;
-            box-shadow: -5px 0 30px rgba(0,0,0,0.08);
             z-index: 2000;
-            transition: right 0.4s ease;
+            transition: right 0.3s ease;
             display: flex;
             flex-direction: column;
         }
@@ -536,7 +526,7 @@
         }
 
         .cart-header {
-            padding: 2rem;
+            padding: 1.5rem;
             background: var(--pink-light);
             display: flex;
             justify-content: space-between;
@@ -545,7 +535,7 @@
         }
 
         .cart-header h3 {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             color: var(--dark);
             font-weight: 400;
             font-family: 'Playfair Display', serif;
@@ -554,27 +544,22 @@
         .close-cart {
             background: none;
             border: none;
-            font-size: 1.3rem;
+            font-size: 1.5rem;
             cursor: pointer;
             color: var(--dark);
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .close-cart:hover {
-            background: rgba(212, 175, 55, 0.1);
-            color: var(--gold);
-        }
-
         .cart-items {
             flex: 1;
             overflow-y: auto;
-            padding: 1.5rem;
+            padding: 1rem;
+            -webkit-overflow-scrolling: touch;
         }
 
         .cart-item {
@@ -597,7 +582,7 @@
         }
 
         .cart-item-info h4 {
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             margin-bottom: 0.2rem;
             font-weight: 500;
         }
@@ -615,17 +600,12 @@
             border: none;
             color: #ccc;
             cursor: pointer;
-            font-size: 1.1rem;
-            transition: color 0.3s;
+            font-size: 1.2rem;
             padding: 0.5rem;
         }
 
-        .remove-item:hover {
-            color: #ff4444;
-        }
-
         .cart-footer {
-            padding: 2rem;
+            padding: 1.5rem;
             border-top: 1px solid rgba(212, 175, 55, 0.2);
             background: white;
         }
@@ -634,13 +614,13 @@
             display: flex;
             justify-content: space-between;
             font-size: 1.2rem;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             font-weight: 600;
         }
 
         .checkout-btn {
             width: 100%;
-            padding: 1.1rem;
+            padding: 1rem;
             background: var(--gold);
             color: white;
             border: none;
@@ -648,17 +628,9 @@
             font-size: 1rem;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s;
-            letter-spacing: 0.5px;
         }
 
-        .checkout-btn:hover {
-            background: var(--gold-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
-        }
-
-        /* Modal */
+        /* Modal Mobile */
         .modal {
             display: none;
             position: fixed;
@@ -666,11 +638,10 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.5);
+            background: rgba(0,0,0,0.8);
             z-index: 3000;
             justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
+            align-items: flex-end;
         }
 
         .modal.active {
@@ -679,25 +650,21 @@
 
         .modal-content {
             background: white;
-            width: 90%;
-            max-width: 850px;
-            border-radius: 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            max-height: 90vh;
+            border-radius: 20px 20px 0 0;
             overflow: hidden;
             position: relative;
-            animation: modalIn 0.3s ease;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+            animation: slideUp 0.3s ease;
         }
 
-        @keyframes modalIn {
-            from { opacity: 0; transform: scale(0.95); }
-            to { opacity: 1; transform: scale(1); }
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
         }
 
         .modal-imagen {
-            height: 100%;
-            min-height: 400px;
+            height: 300px;
             background: linear-gradient(135deg, var(--pink-light) 0%, var(--gold-light) 100%);
         }
 
@@ -705,137 +672,118 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            display: block;
         }
 
         .modal-info {
-            padding: 3rem;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
+            padding: 1.5rem;
         }
 
         .modal-info h2 {
-            font-size: 2rem;
-            margin-bottom: 0.8rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
             color: var(--dark);
             font-weight: 400;
         }
 
         .modal-info .precio {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             color: var(--gold);
             font-weight: 600;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
             font-family: 'Playfair Display', serif;
         }
 
         .modal-info p {
             color: var(--gray);
-            line-height: 1.8;
-            margin-bottom: 2rem;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
             font-weight: 300;
         }
 
         .close-modal {
             position: absolute;
-            top: 20px;
-            right: 20px;
+            top: 10px;
+            right: 10px;
             background: rgba(255,255,255,0.9);
             border: none;
             width: 40px;
             height: 40px;
             border-radius: 50%;
             cursor: pointer;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
             z-index: 10;
-            transition: all 0.3s;
             display: flex;
             align-items: center;
             justify-content: center;
             color: var(--dark);
-            backdrop-filter: blur(10px);
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
-        .close-modal:hover {
-            background: var(--gold);
-            color: white;
-            transform: rotate(90deg);
-        }
-
-        /* Servicios */
+        /* Servicios Mobile */
         .servicios {
-            padding: 6rem 5%;
+            padding: 3rem 1rem;
             background: var(--pink-light);
         }
 
         .servicios-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 3rem;
-            max-width: 1200px;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
         .servicio-card {
             text-align: center;
-            padding: 3rem 2rem;
+            padding: 2rem 1.5rem;
             background: white;
-            border-radius: 20px;
-            transition: all 0.3s;
+            border-radius: 16px;
             border: 1px solid transparent;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.04);
-        }
-
-        .servicio-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--gold-light);
-            box-shadow: 0 15px 30px rgba(212, 175, 55, 0.08);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         .servicio-icon {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: var(--gold-light);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 1.5rem;
+            margin: 0 auto 1rem;
             color: var(--gold);
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
 
         .servicio-card h3 {
-            font-size: 1.3rem;
-            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            margin-bottom: 0.8rem;
             color: var(--dark);
             font-weight: 500;
         }
 
         .servicio-card p {
             color: var(--gray);
-            line-height: 1.7;
-            font-size: 0.95rem;
+            line-height: 1.6;
+            font-size: 0.9rem;
             font-weight: 300;
         }
 
-        /* Testimonios */
+        /* Testimonios Mobile */
         .testimonios {
-            padding: 6rem 5%;
+            padding: 3rem 1rem;
             background: white;
         }
 
         .testimonios-container {
             max-width: 800px;
             margin: 0 auto;
-            position: relative;
         }
 
         .testimonio-slide {
             text-align: center;
-            padding: 2rem;
+            padding: 1rem;
             display: none;
         }
 
@@ -850,11 +798,11 @@
         }
 
         .testimonio-text {
-            font-size: 1.4rem;
+            font-size: 1.1rem;
             font-style: italic;
             color: var(--dark);
-            margin-bottom: 2rem;
-            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
             font-family: 'Playfair Display', serif;
             font-weight: 400;
         }
@@ -862,7 +810,7 @@
         .testimonio-autor {
             font-weight: 600;
             color: var(--gold);
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             letter-spacing: 1px;
         }
 
@@ -870,49 +818,43 @@
             display: flex;
             justify-content: center;
             gap: 1rem;
-            margin-top: 3rem;
+            margin-top: 2rem;
         }
 
         .testimonio-btn {
-            width: 50px;
-            height: 50px;
+            width: 45px;
+            height: 45px;
             border-radius: 50%;
             border: 1px solid var(--gold);
             background: white;
             color: var(--gold);
             cursor: pointer;
-            font-size: 1.1rem;
-            transition: all 0.3s;
+            font-size: 1rem;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        .testimonio-btn:hover {
-            background: var(--gold);
-            color: white;
-        }
-
-        /* Footer */
+        /* Footer Mobile */
         footer {
             background: var(--dark);
             color: white;
-            padding: 4rem 5% 2rem;
+            padding: 3rem 1rem 1.5rem;
         }
 
         .footer-content {
             max-width: 1400px;
             margin: 0 auto;
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr 1fr;
-            gap: 4rem;
-            margin-bottom: 3rem;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
         }
 
         .footer-section h3 {
             color: var(--gold);
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
             font-weight: 400;
             font-family: 'Playfair Display', serif;
         }
@@ -921,79 +863,195 @@
         .footer-section a {
             color: #aaa;
             text-decoration: none;
-            line-height: 2;
-            transition: color 0.3s;
-            font-size: 0.95rem;
+            line-height: 1.8;
+            font-size: 0.9rem;
             font-weight: 300;
-        }
-
-        .footer-section a:hover {
-            color: var(--gold);
         }
 
         .footer-bottom {
             border-top: 1px solid #444;
-            padding-top: 2rem;
+            padding-top: 1.5rem;
             text-align: center;
             color: #666;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        /* Responsive */
-        @media (max-width: 968px) {
-            .hero-content {
-                grid-template-columns: 1fr;
-                text-align: center;
-                gap: 3rem;
-            }
-
-            .hero-text h1 {
-                font-size: 2.8rem;
-            }
-
-            .hero-image {
-                height: 400px;
-                order: -1;
-            }
-
-            .floating-card.left {
-                left: 10px;
-                bottom: 20px;
-            }
-
-            .floating-card.right {
-                right: 10px;
-                top: 20px;
+        /* Desktop Styles */
+        @media (min-width: 768px) {
+            .menu-toggle {
+                display: none;
             }
 
             .nav-links {
-                gap: 1.5rem;
+                position: static;
+                flex-direction: row;
+                width: auto;
+                height: auto;
+                padding: 0;
+                background: transparent;
+                box-shadow: none;
+                left: auto;
             }
 
-            .servicios-grid {
-                grid-template-columns: 1fr;
+            .nav-links a {
+                border-bottom: none;
+                padding: 0;
+                font-size: 0.95rem;
             }
 
-            .modal-content {
-                grid-template-columns: 1fr;
+            .logo {
+                font-size: 2rem;
+                margin-right: 3rem;
             }
 
-            .footer-content {
-                grid-template-columns: 1fr;
+            .hero {
+                padding: 4rem 5%;
+                min-height: 100vh;
+            }
+
+            .hero-content {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4rem;
+                align-items: center;
+            }
+
+            .hero-text {
+                text-align: left;
+                order: 1;
+            }
+
+            .hero-text h1 {
+                font-size: 3.5rem;
+            }
+
+            .hero-image {
+                height: 500px;
+                order: 2;
+            }
+
+            .cta-buttons {
+                flex-direction: row;
+                justify-content: flex-start;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: auto;
+            }
+
+            .floating-card {
+                padding: 1.2rem 1.5rem;
+            }
+
+            .floating-card.left {
+                bottom: 40px;
+                left: -30px;
+            }
+
+            .floating-card.right {
+                top: 40px;
+                right: -20px;
+            }
+
+            .icon-delicate {
+                width: 32px;
+                height: 32px;
+            }
+
+            .floating-text strong {
+                font-size: 0.95rem;
+            }
+
+            .floating-text span {
+                font-size: 0.8rem;
+            }
+
+            .catalogo {
+                padding: 6rem 5%;
+            }
+
+            .section-header h2 {
+                font-size: 2.5rem;
+            }
+
+            .filtros {
+                justify-content: center;
+                flex-wrap: wrap;
+                overflow-x: visible;
+            }
+
+            .productos-grid {
+                grid-template-columns: repeat(2, 1fr);
                 gap: 2rem;
-                text-align: center;
+            }
+
+            .producto-imagen {
+                height: 320px;
             }
 
             .cart-sidebar {
-                width: 100%;
-                right: -100%;
+                width: 400px;
+                right: -400px;
+                box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+            }
+
+            .modal {
+                align-items: center;
+            }
+
+            .modal-content {
+                width: 90%;
+                max-width: 800px;
+                border-radius: 20px;
+                max-height: 80vh;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                animation: modalIn 0.3s ease;
+            }
+
+            @keyframes modalIn {
+                from { opacity: 0; transform: scale(0.95); }
+                to { opacity: 1; transform: scale(1); }
+            }
+
+            .modal-imagen {
+                height: 100%;
+                min-height: 400px;
+            }
+
+            .modal-info {
+                padding: 2rem;
+            }
+
+            .servicios-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 2rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 2fr 1fr 1fr 1fr;
+                gap: 3rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .productos-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .hero-text h1 {
+                font-size: 4rem;
+            }
+
+            .hero-image {
+                height: 600px;
             }
         }
 
         .fade-in {
             opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
         }
 
         .fade-in.visible {
@@ -1001,23 +1059,32 @@
             transform: translateY(0);
         }
     </style>
-<base target="_blank">
 </head>
 <body>
+
+    <div class="overlay" id="overlay" onclick="closeMenu()"></div>
 
     <nav>
         <div class="nav-container">
             <a href="#" class="logo">Rosalía</a>
-            <ul class="nav-links">
-                <li><a href="#inicio">Inicio</a></li>
-                <li><a href="#catalogo">Catálogo</a></li>
-                <li><a href="#servicios">Servicios</a></li>
-                <li><a href="#testimonios">Testimonios</a></li>
-                <li><a href="#contacto">Contacto</a></li>
+            
+            <button class="menu-toggle" id="menuToggle" onclick="toggleMenu()" aria-label="Menú">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#inicio" onclick="closeMenu()">Inicio</a></li>
+                <li><a href="#catalogo" onclick="closeMenu()">Catálogo</a></li>
+                <li><a href="#servicios" onclick="closeMenu()">Servicios</a></li>
+                <li><a href="#testimonios" onclick="closeMenu()">Testimonios</a></li>
+                <li><a href="#contacto" onclick="closeMenu()">Contacto</a></li>
             </ul>
+
             <div class="nav-icons">
                 <button class="cart-btn" onclick="toggleCart()" aria-label="Carrito">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M6 6h15l-1.5 9h-12z"></path>
                         <circle cx="9" cy="20" r="1"></circle>
                         <circle cx="18" cy="20" r="1"></circle>
@@ -1029,19 +1096,17 @@
         </div>
     </nav>
 
-    <!-- Hero con la ROSA CON LLUVIA/GOTAS -->
     <section class="hero" id="inicio">
         <div class="hero-content">
             <div class="hero-text">
                 <h1>Arte Floral <span>Exquisito</span></h1>
-                <p>Transformamos emociones en arreglos únicos. Cada rosa cuenta una historia de amor, celebración y belleza natural elaborada con dedicación artesanal.</p>
+                <p>Transformamos emociones en arreglos únicos. Cada rosa cuenta una historia de amor, celebración y belleza natural.</p>
                 <div class="cta-buttons">
                     <button class="btn-primary" onclick="scrollToSection('catalogo')">Ver Catálogo</button>
                     <button class="btn-secondary" onclick="scrollToSection('servicios')">Nuestros Servicios</button>
                 </div>
             </div>
             <div class="hero-image">
-                <!-- IMAGEN PRINCIPAL: Rosa con gotas de lluvia -->
                 <img src="https://images.unsplash.com/photo-1561181286-d3fee7d55364?w=800&h=1000&fit=crop&auto=format" 
                      alt="Rosa premium con gotas de rocío">
                 
@@ -1062,7 +1127,7 @@
                     </svg>
                     <div class="floating-text">
                         <strong>4.9 de 5</strong>
-                        <span>+2000 clientes felices</span>
+                        <span>+2000 clientes</span>
                     </div>
                 </div>
             </div>
@@ -1093,7 +1158,7 @@
             <button class="close-cart" onclick="toggleCart()">✕</button>
         </div>
         <div class="cart-items" id="cartItems">
-            <p style="text-align: center; color: #999; padding: 3rem; font-weight: 300;">Tu carrito está vacío</p>
+            <p style="text-align: center; color: #999; padding: 2rem; font-weight: 300;">Tu carrito está vacío</p>
         </div>
         <div class="cart-footer">
             <div class="cart-total">
@@ -1104,8 +1169,8 @@
         </div>
     </div>
 
-    <div class="modal" id="productModal">
-        <div class="modal-content">
+    <div class="modal" id="productModal" onclick="closeModalOutside(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
             <button class="close-modal" onclick="closeModal()">✕</button>
             <div class="modal-imagen">
                 <img id="modalImg" src="" alt="">
@@ -1114,7 +1179,7 @@
                 <h2 id="modalTitle">Nombre Producto</h2>
                 <p class="precio" id="modalPrice">$0.00</p>
                 <p id="modalDesc">Descripción del producto...</p>
-                <button class="btn-primary" id="modalAddBtn" style="width: 100%; margin-top: 1rem;">
+                <button class="btn-primary" id="modalAddBtn" style="width: 100%;">
                     Añadir al Carrito
                 </button>
             </div>
@@ -1130,33 +1195,33 @@
         <div class="servicios-grid">
             <div class="servicio-card fade-in">
                 <div class="servicio-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M12 7.5a4.5 4.5 0 1 1 4.5 4.5M12 7.5A4.5 4.5 0 1 0 7.5 12M12 7.5V9m-4.5 3a4.5 4.5 0 1 0 4.5 4.5M7.5 12H9m7.5 0a4.5 4.5 0 1 1-4.5 4.5m4.5-4.5H15m-3 4.5V15"/>
                         <circle cx="12" cy="12" r="2"/>
                     </svg>
                 </div>
                 <h3>Arreglos Personalizados</h3>
-                <p>Diseñamos arreglos únicos adaptados a tu estilo, ocasión y presupuesto. Consulta gratuita con nuestros expertos.</p>
+                <p>Diseñamos arreglos únicos adaptados a tu estilo, ocasión y presupuesto.</p>
             </div>
             <div class="servicio-card fade-in">
                 <div class="servicio-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <path d="M2 12h20M2 12c0 5 4 9 9 9h2c5 0 9-4 9-9M2 12c0-3 2-6 5-6h10c3 0 5 3 5 6"/>
                         <circle cx="12" cy="7" r="2"/>
                     </svg>
                 </div>
                 <h3>Decoración de Eventos</h3>
-                <p>Bodas, corporativos y celebraciones. Transformamos espacios en ambientes mágicos con nuestra decoración floral.</p>
+                <p>Bodas, corporativos y celebraciones. Transformamos espacios mágicos.</p>
             </div>
             <div class="servicio-card fade-in">
                 <div class="servicio-icon">
-                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
                         <rect x="2" y="8" width="20" height="12" rx="2"/>
                         <path d="M2 8h20v4H2zM12 8V4"/>
                     </svg>
                 </div>
                 <h3>Envío Express</h3>
-                <p>Entrega el mismo día en la ciudad. Empaque premium y cuidado especial para que lleguen perfectas.</p>
+                <p>Entrega el mismo día en la ciudad. Empaque premium garantizado.</p>
             </div>
         </div>
     </section>
@@ -1168,15 +1233,15 @@
         </div>
         <div class="testimonios-container fade-in">
             <div class="testimonio-slide active">
-                <p class="testimonio-text">"Las flores para mi boda fueron simplemente espectaculares. Rosalía entendió exactamente mi visión y la superó. Cada detalle fue perfecto."</p>
+                <p class="testimonio-text">"Las flores para mi boda fueron simplemente espectaculares. Rosalía entendió exactamente mi visión y la superó."</p>
                 <p class="testimonio-autor">— María González</p>
             </div>
             <div class="testimonio-slide">
-                <p class="testimonio-text">"El servicio de entrega express me salvó el día. En 90 minutos tenía el ramo más hermoso en mi puerta. ¡Altamente recomendado!"</p>
+                <p class="testimonio-text">"El servicio de entrega express me salvó el día. En 90 minutos tenía el ramo más hermoso en mi puerta."</p>
                 <p class="testimonio-autor">— Carlos Mendez</p>
             </div>
             <div class="testimonio-slide">
-                <p class="testimonio-text">"Calidad incomparable. Desde que descubrí Rosalía, no compro flores en ningún otro lugar. La frescura y el diseño son únicos."</p>
+                <p class="testimonio-text">"Calidad incomparable. Desde que descubrí Rosalía, no compro flores en ningún otro lugar."</p>
                 <p class="testimonio-autor">— Ana Patricia López</p>
             </div>
             <div class="testimonio-nav">
@@ -1190,9 +1255,9 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3>Rosalía Florería</h3>
-                <p>Creando momentos inolvidables desde 2015. Especialistas en arte floral de lujo para toda ocasión.</p>
+                <p>Creando momentos inolvidables desde 2015. Especialistas en arte floral de lujo.</p>
                 <br>
-                <p>📍 Av. Revolución 123, Ciudad de México</p>
+                <p>📍 Av. Revolución 123, CDMX</p>
                 <p>📞 (55) 1234-5678</p>
                 <p>✉️ hola@rosaliaflores.com</p>
             </div>
@@ -1201,17 +1266,17 @@
                 <a href="#">Sobre Nosotros</a><br>
                 <a href="#">Catálogo</a><br>
                 <a href="#">Servicios</a><br>
-                <a href="#">Blog Floral</a>
+                <a href="#">Blog</a>
             </div>
             <div class="footer-section">
-                <h3>Servicio al Cliente</h3>
+                <h3>Ayuda</h3>
                 <a href="#">Preguntas Frecuentes</a><br>
-                <a href="#">Envíos y Entregas</a><br>
-                <a href="#">Términos y Condiciones</a><br>
-                <a href="#">Política de Privacidad</a>
+                <a href="#">Envíos</a><br>
+                <a href="#">Términos</a><br>
+                <a href="#">Privacidad</a>
             </div>
             <div class="footer-section">
-                <h3>Síguenos</h3>
+                <h3>Redes</h3>
                 <a href="#">Instagram</a><br>
                 <a href="#">Facebook</a><br>
                 <a href="#">Pinterest</a><br>
@@ -1224,7 +1289,6 @@
     </footer>
 
     <script>
-        // URLs VERIFICADAS DE FLORES REALES (sin animales!)
         const productos = [
             {
                 id: 1,
@@ -1232,7 +1296,7 @@
                 categoria: "ramos",
                 precio: 1299,
                 imagen: "https://images.unsplash.com/photo-1562690868-60bbe7293e94?w=600&h=800&fit=crop&auto=format",
-                descripcion: "12 rosas rojas premium importadas con detalles en follaje selecto y lazo de seda dorada. Incluye tarjeta personalizada."
+                descripcion: "12 rosas rojas premium importadas con detalles en follaje selecto y lazo de seda dorada."
             },
             {
                 id: 2,
@@ -1240,7 +1304,7 @@
                 categoria: "ramos",
                 precio: 1899,
                 imagen: "https://images.unsplash.com/photo-1563241527-3004b7be0ee9?w=600&h=800&fit=crop&auto=format",
-                descripcion: "Elegante arreglo de peonías blancas y rosas en tonos blush, presentadas en base de cerámica artesanal."
+                descripcion: "Elegante arreglo de peonías blancas y rosas en tonos blush."
             },
             {
                 id: 3,
@@ -1248,7 +1312,7 @@
                 categoria: "bodas",
                 precio: 4500,
                 imagen: "https://images.unsplash.com/photo-1591886960571-74d43a9e4166?w=600&h=800&fit=crop&auto=format",
-                descripcion: "Ramo de novia cascade elaborado con gardenias, rosas garden, y follaje texturizado. Diseño exclusivo."
+                descripcion: "Ramo de novia cascade elaborado con gardenias y rosas garden."
             },
             {
                 id: 4,
@@ -1256,7 +1320,7 @@
                 categoria: "plantas",
                 precio: 1599,
                 imagen: "https://images.unsplash.com/photo-1566928670968-a589322d7d6b?w=600&h=800&fit=crop&auto=format",
-                descripcion: "Planta de orquídea blanca de doble vástago en maceta de porcelana blanca. Duración 3+ meses."
+                descripcion: "Planta de orquídea blanca de doble vástago en maceta de porcelana."
             },
             {
                 id: 5,
@@ -1264,7 +1328,7 @@
                 categoria: "eventos",
                 precio: 3200,
                 imagen: "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=600&h=800&fit=crop&auto=format",
-                descripcion: "Diseño monumental con hortensias blancas, rosas vendela y velas en candelabro dorado."
+                descripcion: "Diseño monumental con hortensias blancas y rosas vendela."
             },
             {
                 id: 6,
@@ -1272,7 +1336,7 @@
                 categoria: "ramos",
                 precio: 2100,
                 imagen: "https://images.unsplash.com/photo-1582794543139-8ac92a900275?w=600&h=800&fit=crop&auto=format",
-                descripcion: "Caja negra mate con 24 rosas preservadas en tonalidades blush pink. Duran 1 año sin agua."
+                descripcion: "Caja negra mate con 24 rosas preservadas. Duran 1 año sin agua."
             }
         ];
 
@@ -1295,9 +1359,6 @@
                              alt="${producto.nombre}" 
                              loading="lazy"
                              onerror="this.style.display='none'">
-                        <div class="producto-overlay">
-                            <button class="quick-view">Vista Rápida</button>
-                        </div>
                     </div>
                     <div class="producto-info">
                         <p class="producto-categoria">${producto.categoria}</p>
@@ -1338,8 +1399,19 @@
             document.body.style.overflow = 'auto';
         }
 
+        function closeModalOutside(event) {
+            if (event.target === document.getElementById('productModal')) {
+                closeModal();
+            }
+        }
+
         function toggleCart() {
             document.getElementById('cartSidebar').classList.toggle('open');
+            if (document.getElementById('cartSidebar').classList.contains('open')) {
+                document.body.style.overflow = 'hidden';
+            } else {
+                document.body.style.overflow = 'auto';
+            }
         }
 
         function addToCart(id) {
@@ -1357,10 +1429,6 @@
             const count = document.getElementById('cartCount');
             count.style.transform = 'scale(1.3)';
             setTimeout(() => count.style.transform = 'scale(1)', 200);
-            
-            if(window.innerWidth > 968) {
-                document.getElementById('cartSidebar').classList.add('open');
-            }
         }
 
         function removeFromCart(id) {
@@ -1376,7 +1444,7 @@
             document.getElementById('cartTotal').textContent = `$${total.toLocaleString()}`;
             
             if(carrito.length === 0) {
-                cartItems.innerHTML = '<p style="text-align: center; color: #999; padding: 3rem; font-weight: 300;">Tu carrito está vacío</p>';
+                cartItems.innerHTML = '<p style="text-align: center; color: #999; padding: 2rem; font-weight: 300;">Tu carrito está vacío</p>';
             } else {
                 cartItems.innerHTML = carrito.map(item => `
                     <div class="cart-item">
@@ -1402,6 +1470,18 @@
             slides[currentTestimonio].classList.add('active');
         }
 
+        function toggleMenu() {
+            document.getElementById('menuToggle').classList.toggle('active');
+            document.getElementById('navLinks').classList.toggle('active');
+            document.getElementById('overlay').classList.toggle('active');
+        }
+
+        function closeMenu() {
+            document.getElementById('menuToggle').classList.remove('active');
+            document.getElementById('navLinks').classList.remove('active');
+            document.getElementById('overlay').classList.remove('active');
+        }
+
         function setupScrollAnimations() {
             const observer = new IntersectionObserver((entries) => {
                 entries.forEach(entry => {
@@ -1415,16 +1495,10 @@
         }
 
         function scrollToSection(id) {
+            closeMenu();
             document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
         }
 
-        window.onclick = function(event) {
-            const modal = document.getElementById('productModal');
-            if(event.target === modal) {
-                closeModal();
-            }
-        }
-        
         setInterval(() => changeTestimonio(1), 5000);
     </script>
 </body>
